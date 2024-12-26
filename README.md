@@ -10,9 +10,9 @@ This repository contains solutions to image processing tasks from the DIP lab fi
 
 ## Task 1
 - **Description**: 
-  In this task, I extructed details of the provided image like: image dimension, frequency distribution of intensities, range.
+  In this task, I analyzed a grayscale image by extracting details such as its dimensions, intensity distribution, and intensity range. Additionally, I displayed the image and plotted a histogram to visualize the frequency distribution of pixel intensities.
 - **Approach**: 
-  I used a simple intensity subtraction method to decrease brightness while ensuring the pixel values remain in valid range.
+  I processed the image by loading it as grayscale, extracted intensity distributions, and visualized the frequency of pixel intensities using NumPy and Matplotlib.
 
 ### Code Walkthrough
 
@@ -114,3 +114,102 @@ This repository contains solutions to image processing tasks from the DIP lab fi
 - range=(0, 255): Maps normalized values to the 0–255 range.
 - color='gray': Uses a gray color for the histogram bars.
 - plt.grid: Adds a grid for easier interpretation.
+
+
+## Task 2
+- **Description**: 
+   In this task, I extracted and visualized a sub-region of a provided RGB image and its corresponding grayscale representation. Additionally, the original images and the sub-region values were displayed.
+- **Approach**: 
+   I used skimage to load the image and convert it to grayscale. A specific sub-region was extracted from both the RGB and grayscale images, and the pixel values were visualized.
+
+### Code Walkthrough
+
+### 1. Import Libraries
+
+
+
+```bash
+  from skimage import io, color
+  import numpy as np
+  import matplotlib.pyplot as plt
+
+```
+- skimage: Used for loading and processing images.
+- numpy: Provides tools for working with numerical data, including images as arrays.
+- matplotlib.pyplot: Used to display images and plots.
+
+### 2.  Load the RGB Image
+
+```bash
+  image_path = r'C:\Users\user\Downloads\DIP_Lab_task_02.jpg'
+  image_rgb = io.imread(image_path)
+
+```
+- io.imread: Reads the image from the given path.
+
+### 3. Convert to Grayscale
+
+```bash
+  image_gray = color.rgb2gray(image_rgb)
+  image_gray = (image_gray * 255).astype(np.uint8)
+
+```
+- color.rgb2gray: Converts the RGB image to grayscale (pixel values normalized to the range 0–1).
+- (image_gray * 255).astype(np.uint8): Scales the pixel values to 8-bit integers (range 0–255).
+
+### 4. Extract a Sub-region (5x5)
+
+```bash
+  start_x, start_y = 50, 50
+  sub_region_rgb = image_rgb[start_y:start_y + 5, start_x:start_x + 5]
+  sub_region_gray = image_gray[start_y:start_y + 5, start_x:start_x + 5]
+
+```
+- Extracts a 5x5 pixel sub-region starting at the coordinates (50, 50) from both the RGB and grayscale images.
+
+### 5. 5. Display the Original RGB and Grayscale Images
+
+```bash
+   plt.figure(figsize=(12, 6))
+  plt.subplot(1, 2, 1)
+  plt.imshow(image_rgb)
+  plt.title("Original RGB Image")
+  plt.axis('off')
+
+  plt.subplot(1, 2, 2)
+  plt.imshow(image_gray, cmap='gray', vmin=0, vmax=255)
+  plt.title("Grayscale Image")
+  plt.axis('off')
+  plt.show()
+
+```
+- plt.imshow: Displays the images.
+- cmap='gray': Ensures the grayscale image is displayed correctly.
+- plt.axis('off'): Hides the axes for cleaner visualization.
+
+### 6.  Display Sub-region Values
+
+```bash
+  print("Sub-region (5x5) from RGB Image:")
+  print(sub_region_rgb)
+
+  print("\nSub-region (5x5) from Grayscale Image:")
+  print(sub_region_gray)
+
+```
+- Prints the pixel values of the 5x5 sub-region for both RGB and grayscale images.
+
+### 7. Visualize the 5x5 Grayscale Sub-region
+
+```bash
+   plt.figure(figsize=(4, 4))
+  plt.imshow(sub_region_gray, cmap='gray', vmin=0, vmax=255)
+  plt.title("5x5 Sub-region of Grayscale Image")
+  plt.axis('on')
+  plt.show()
+
+```
+- plt.imshow: Displays the grayscale sub-region.
+- plt.axis('on'): Shows the axes for precise location information.
+
+
