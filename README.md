@@ -170,7 +170,7 @@ This repository contains solutions to image processing tasks from the DIP lab fi
 ### 5. 5. Display the Original RGB and Grayscale Images
 
 ```bash
-   plt.figure(figsize=(12, 6))
+  plt.figure(figsize=(12, 6))
   plt.subplot(1, 2, 1)
   plt.imshow(image_rgb)
   plt.title("Original RGB Image")
@@ -202,7 +202,7 @@ This repository contains solutions to image processing tasks from the DIP lab fi
 ### 7. Visualize the 5x5 Grayscale Sub-region
 
 ```bash
-   plt.figure(figsize=(4, 4))
+  plt.figure(figsize=(4, 4))
   plt.imshow(sub_region_gray, cmap='gray', vmin=0, vmax=255)
   plt.title("5x5 Sub-region of Grayscale Image")
   plt.axis('on')
@@ -211,5 +211,109 @@ This repository contains solutions to image processing tasks from the DIP lab fi
 ```
 - plt.imshow: Displays the grayscale sub-region.
 - plt.axis('on'): Shows the axes for precise location information.
+
+
+## Task 3
+- **Description**: 
+  In this task, I applied a median filter to reduce noise in a grayscale image using both 3x3 and 5x5 kernel sizes. The original image with noise was displayed, followed by the images after filtering to visualize the noise reduction effect.
+- **Approach**: 
+  I applied a median filter manually to smooth the image and reduce noise. A smaller kernel size (3x3) was used first, followed by a larger kernel size (5x5) to observe the impact of filter size on noise reduction.
+  
+### Code Walkthrough
+
+### 1. Import Libraries
+
+
+
+```bash
+  from PIL import Image
+  import numpy as np
+  import matplotlib.pyplot as plt
+
+```
+- PIL: Used for loading and processing images.
+- numpy: Provides tools for working with numerical data, including images as arrays.
+- matplotlib.pyplot: Used to display images and plots.
+
+### 2.  Load the Image
+
+```bash
+  image_path = r'C:\Users\user\Downloads\DIP_Lab_task_03.png'
+  image = Image.open(image_path).convert('L')
+  image_array = np.array(image)
+
+```
+- Image.open: Opens the image from the specified path.
+- convert('L'): Converts the image to grayscale.
+- np.array: Converts the image to a NumPy array for easier processing.
+
+### 3. Display the Original Image
+
+```bash
+  plt.figure(figsize=(8, 6))
+  plt.title("Original Image with Noise")
+  plt.imshow(image_array, cmap='gray', vmin=0, vmax=255)
+  plt.axis('off')
+  plt.show()
+
+```
+- plt.imshow: Displays the image in grayscale.
+- vmin=0, vmax=255: Ensures pixel values are displayed in the 0-255 range.
+- plt.axis('off'): Hides axis for cleaner visualization.
+
+### 4. Apply Median Filter (3x3 Kernel)
+
+```bash
+  def apply_median_filter(image, kernel_size=3):
+      padded_image = np.pad(image, kernel_size // 2, mode='constant', constant_values=0)
+      filtered_image = np.zeros_like(image)
+      for i in range(image.shape[0]):
+          for j in range(image.shape[1]):
+              region = padded_image[i:i + kernel_size, j:j + kernel_size]
+              filtered_image[i, j] = np.median(region)
+      return filtered_image
+
+  smoothed_image = apply_median_filter(image_array, kernel_size=3)
+
+
+```
+- apply_median_filter: A custom function to apply the median filter to smooth the image.
+- padded_image: Adds padding around the image to handle border pixels.
+- np.median: Computes the median of the pixel values in the kernel region.
+- smoothed_image: The filtered image using a 3x3 kernel.
+
+### 5. Display Smoothed Image (3x3 Kernel)
+
+```bash
+  plt.figure(figsize=(8, 6))
+  plt.title("Smoothed Image (Median Filter Applied)")
+  plt.imshow(smoothed_image, cmap='gray', vmin=0, vmax=255)
+  plt.axis('off')
+  plt.show()
+
+```
+
+### 6.  Apply Median Filter (5x5 Kernel)
+
+```bash
+  smoothed_image_5x5 = apply_median_filter(image_array, kernel_size=5)
+
+
+```
+- Applies the median filter using a 5x5 kernel to observe the effect of increased kernel size.
+
+### 7. Display Smoothed Image (5x5 Kernel)
+
+```bash
+  plt.figure(figsize=(8, 6))
+  plt.title("Smoothed Image (Median Filter with 5x5 Kernel)")
+  plt.imshow(smoothed_image_5x5, cmap='gray', vmin=0, vmax=255)
+  plt.axis('off')
+  plt.show()
+
+```
+
+
+
 
 
