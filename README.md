@@ -319,7 +319,7 @@ This repository contains solutions to image processing tasks from the DIP lab fi
   In this task,focusing on reducing the brightness of an image using gamma correction, a method widely used in image processing for brightness adjustment, I displayed both of the image .
 - **Approach**: 
   The image was loaded and normalized to the range [0, 1] before applying the gamma correction formula 
-\( I_{\text{output}} = (I_{\text{input}})^\gamma \). The pixel values were then scaled back to [0,255] and displayed using Matplotlib.
+I_output = (I_input)^gamma. The pixel values were then scaled back to [0,255] and displayed using Matplotlib.
 
 ### Code Walkthrough
 
@@ -357,7 +357,7 @@ This repository contains solutions to image processing tasks from the DIP lab fi
 
 ```
 - Normalize: The image is divided by 255 to scale pixel values to the [0, 1] range.
-- Apply Gamma Correction: The formula \( I_{\text{output}} = (I_{\text{input}})^\gamma \) is applied.
+- Apply Gamma Correction: The formula I_output = (I_input)^gamma is applied.
   - gamma > 1 reduces brightness.
   - gamma < 1 increases brightness.
 - Rescale: The corrected values are scaled back to [0, 255] and converted to uint8 for display compatibility.
