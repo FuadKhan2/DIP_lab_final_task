@@ -314,6 +314,85 @@ This repository contains solutions to image processing tasks from the DIP lab fi
 ```
 
 
+## Task 4
+- **Description**: 
+  In this task,focusing on reducing the brightness of an image using gamma correction, a method widely used in image processing for brightness adjustment, I displayed both of the image .
+- **Approach**: 
+  The image was loaded and normalized to the range [0, 1] before applying the gamma correction formula 
+\( I_{\text{output}} = (I_{\text{input}})^\gamma \). The pixel values were then scaled back to [0,255] and displayed using Matplotlib.
 
+### Code Walkthrough
+
+### 1. Import Libraries
+
+
+
+```bash
+  from skimage import io, color
+  import numpy as np
+  import matplotlib.pyplot as plt
+
+```
+
+### 2.  Load the Image
+
+```bash
+  img = io.imread(r'C:\Users\user\Downloads\DIP_Lab_task_04.jpg')
+
+
+```
+- io.imread: Reads the image from the given path.
+- The loaded image is stored as a NumPy array where pixel values range from 0 to 255.
+
+### 3. Define the Gamma Correction Function
+
+```bash
+  def gamma_correction(image, gamma):
+      image = image / 255
+      image = image ** gamma
+      image = image * 255
+      image = image.astype(np.uint8)
+      return image
+
+
+```
+- Normalize: The image is divided by 255 to scale pixel values to the [0, 1] range.
+- Apply Gamma Correction: The formula \( I_{\text{output}} = (I_{\text{input}})^\gamma \) is applied.
+  - gamma > 1 reduces brightness.
+  - gamma < 1 increases brightness.
+- Rescale: The corrected values are scaled back to [0, 255] and converted to uint8 for display compatibility.
+
+### 4. Apply Gamma Correction
+
+```bash
+  gamma_value = 3
+  gamma_img = gamma_correction(img, gamma_value)
+
+```
+- A gamma_value of 3 is selected to reduce brightness effectively.
+- The gamma_correction function processes the image and returns the brightness-reduced result.
+
+### 5. Visualize Results
+
+```bash
+  plt.figure(figsize=(12, 6))
+  plt.subplot(1, 2, 1)
+  plt.imshow(img)
+  plt.title("Original Image")
+  plt.axis('off')
+  
+  plt.subplot(1, 2, 2)
+  plt.imshow(gamma_img)
+  plt.title(f"Brightness Reduced Image (Gamma:{gamma_value})")
+  plt.axis('off')
+  
+  plt.show()
+
+```
+- Original Image: Displayed on the left.
+- Brightness Reduced Image: Displayed on the right with a title indicating the applied gamma_value.
+- plt.subplot: Arranges the two images side by side for comparison.
+- plt.imshow: Displays the images using Matplotlib.
+- plt.axis('off'): Hides the axes for a cleaner display.
 
 
