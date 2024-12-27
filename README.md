@@ -396,3 +396,123 @@ I_output = (I_input)^gamma. The pixel values were then scaled back to [0,255] an
 - plt.axis('off'): Hides the axes for a cleaner display.
 
 
+## Task 5
+- **Description**: 
+  In this task, I segmented an apple from the given image by detecting its edges and contours. The process involved converting the image to grayscale, reducing noise, and applying edge detection and thresholding techniques. Finally, the contours of the apple were highlighted on the original image.
+- **Approach**: 
+  The image was first converted to grayscale for simplicity. Gaussian blur was applied to reduce noise, followed by Canny edge detection to identify edges in the image. Otsu's thresholding was then used to create a binary image for segmentation. Contours were extracted and drawn on the original image to segment and highlight the apple.
+
+### Code Walkthrough
+
+### 1. Import Libraries
+
+```bash
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+import cv2
+
+
+```
+- PIL (Pillow): Used for loading and handling images.
+- numpy: Provides tools for working with numerical data, including images as arrays.
+- matplotlib.pyplot: Used to display images and plots.
+- OpenCV (cv2): Used for image processing, such as edge detection and contour extraction.
+
+### 2.  Load the Image
+
+```bash
+image_path = r'C:\Users\user\Downloads\DIP_Lab_task_05.jpg'
+image = Image.open(image_path)
+image_array = np.array(image)
+
+```
+- Image.open(): Opens the input image file.
+- np.array(): Converts the image into a NumPy array for processing.
+
+### 3. Display the Original Image
+
+```bash
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.title("Original Image")
+plt.imshow(image_array)
+plt.axis('off')
+
+```
+- plt.imshow(): Displays the original image.
+- plt.axis('off'): Hides the axes for cleaner visualization.
+
+### 4. Convert the Image to Grayscale
+
+```bash
+gray_image = cv2.cvtColor(image_array, cv2.COLOR_BGR2GRAY) if len(image_array.shape) == 3 else image_array
+
+
+```
+- cv2.cvtColor(): Converts a color image (RGB) to grayscale (if it isn't already).
+- len(image_array.shape) == 3: Checks if the image is in color (3 channels: R, G, B). If not, it assumes the image is already grayscale.
+
+### 5. Apply Gaussian Blur
+
+```bash
+blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
+```
+- cv2.GaussianBlur(): Applies a Gaussian blur to reduce noise and smooth the image.
+- (5, 5): Size of the Gaussian kernel (higher values mean stronger blurring).
+- 0: Standard deviation in the x and y directions.
+
+### 6. Detect Edges Using Canny Edge Detection
+
+```bash
+edges = cv2.Canny(blurred_image, 50, 150)
+
+```
+- cv2.Canny(): Detects edges in the image.
+  - 50: Lower threshold for edge detection.
+  - 150: Upper threshold for edge detection
+
+### 7. Apply Otsu's Thresholding
+
+```bash
+_, binary_image = cv2.threshold(edges, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+```
+- cv2.threshold(): Segments the image into binary form using Otsu's thresholding.
+  - 0: Initial threshold value (ignored when using Otsu's method).
+  - 255: Maximum intensity value for binary pixels.
+  - cv2.THRESH_BINARY + cv2.THRESH_OTSU: Combines binary thresholding with Otsu's method to determine the optimal threshold automatically.
+
+### 8. Find Contours
+```bash
+contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+```
+- cv2.findContours(): Detects contours in the binary image.
+  - cv2.RETR_EXTERNAL: Retrieves only the outer contours.
+  - cv2.CHAIN_APPROX_SIMPLE: Compresses horizontal, vertical, and diagonal segments to save memory.
+
+### 9. Draw Contours on the Original Image
+```bash
+segmented_image = image_array.copy()
+cv2.drawContours(segmented_image, contours, -1, (0, 255, 0), 2)
+
+```
+- cv2.drawContours(): Draws the detected contours on the original image.
+  - segmented_image: A copy of the original image.
+  - contours: List of detected contours.
+  - -1: Draws all detected contours.
+  - (0, 255, 0): Green color for contours (in BGR format).
+  - 2: Thickness of the contour lines.
+
+### 10. Display the Segmented Image
+```bash
+plt.subplot(1, 2, 2)
+plt.title("Segmented Apple")
+plt.imshow(segmented_image)
+plt.axis('off')
+plt.show()
+
+```
+- Displays the segmented image with contours drawn around the apple.
+
